@@ -2,41 +2,249 @@
 <html lang="en-GB">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Roamulus | Van Trip Planner for iPhone</title>
-<meta name="description" content="Roamulus plans every day of your campervan trip, finds a campsite for every night and works around your ferry. Coming soon to the App Store.">
 <link rel="canonical" href="https://roamulus.com/">
+<meta name="description" content="Roamulus plans every day of your campervan or motorhome trip, finds a campsite for every night and works around your ferry. Coming soon to iPhone.">
 <meta name="theme-color" content="#0a0c0f">
-<meta property="og:title" content="Roamulus | Van Trip Planner for iPhone">
-<meta property="og:description" content="Roamulus plans every day of your campervan trip, finds a campsite for every night and works around your ferry. Coming soon to the App Store.">
+<meta property="og:type" content="website">
 <meta property="og:url" content="https://roamulus.com/">
-<meta property="og:image" content="https://roamulus.com/assets/icon.png">
+<meta property="og:title" content="Roamulus · Every night, sorted.">
+<meta property="og:description" content="The van trip planner that plans the drive, finds a campsite for every night and works around your ferry.">
+<meta property="og:image" content="https://roamulus.com/assets/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/assets/icon.png">
 <link rel="apple-touch-icon" href="/assets/icon.png">
-<link rel="stylesheet" href="/style.css">
+<link rel="preload" href="/assets/dm.woff2" as="font" type="font/woff2" crossorigin>
+<script>document.documentElement.classList.add('js')</script>
+<link rel="stylesheet" href="/home.css">
+<script defer src="/home.js"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Roamulus: Van Trip Planner","url":"https://roamulus.com/","operatingSystem":"iOS 17 or later","applicationCategory":"TravelApplication","offers":{"@type":"Offer","price":0,"priceCurrency":"GBP"}}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<header class="nav">
+
+<header class="nav" id="nav">
   <div class="wrap nav-inner">
-    <a class="logo" href="/"><img src="/assets/icon-96.png" alt="" width="30" height="30">Roamulus</a>
-    <nav aria-label="Site"><a href="/support/">Support</a><a href="/privacy/">Privacy</a></nav>
+    <a class="logo" href="/" aria-label="Roamulus home"><img src="/assets/icon-96.png" alt="" width="30" height="30">Roamulus</a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="/support/">Support</a>
+    </nav>
+    <a class="btn btn-primary btn-sm" href="mailto:hello@roamulus.com?subject=Tell%20me%20when%20Roamulus%20launches">Get notified</a>
   </div>
 </header>
-<main id="main" class="hold">
-  <div class="hold-inner">
-    <img class="hold-icon" src="/assets/icon.png" alt="" width="112" height="112">
-    <h1>Roamulus</h1>
-    <p class="hold-tag">All roads lead to Roamulus.</p>
-    <p class="lead">The van trip planner for iPhone. It plans every day of your trip, finds a campsite for every night and works around your ferry.</p>
-    <p class="hold-soon">Coming soon to the App Store</p>
-    <p class="hold-links"><a href="/support/">Support</a><a href="/privacy/">Privacy policy</a><a href="mailto:hello@roamulus.com">hello@roamulus.com</a></p>
+
+<main id="main">
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow reveal">The van trip planner for iPhone</p>
+      <h1 class="h1 reveal" style="--d:1">Every night,<br><span class="gold">sorted.</span></h1>
+      <p class="lead reveal" style="--d:2">Roamulus plans every day of your campervan trip, finds a campsite for every night and works around your ferry. You just drive.</p>
+      <div class="hero-actions reveal" style="--d:3">
+        <span class="btn btn-soon" aria-label="Coming soon to the App Store"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.6s-2.5-1-2.5-3.8zM14.1 5.7c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.7 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.5 2.7-1.3z"/></svg>Coming soon to the App Store</span>
+        <a class="btn btn-quiet" href="mailto:hello@roamulus.com?subject=Tell%20me%20when%20Roamulus%20launches">Tell me when it’s out</a>
+      </div>
+      <ul class="hero-meta reveal" style="--d:4"><li>Free to download</li><li>No account</li><li>No ads</li></ul>
+    </div>
+    <div class="hero-visual" id="hero-visual">
+      <figure class="iphone iphone-back" aria-hidden="true"><img src="/assets/app/trips.webp" alt="" width="660" height="1434"></figure>
+      <figure class="iphone iphone-lg"><img src="/assets/app/home.webp" alt="Roamulus Home showing today on a Kent to Paris trip: the next stop, tonight's campsite, the weather and the shopping list" width="660" height="1434" fetchpriority="high"></figure>
+    </div>
   </div>
+</section>
+
+<section class="strip" aria-label="Highlights">
+  <ul class="wrap">
+    <li><b>A campsite every night</b>Planned around how far you like to drive</li>
+    <li><b>Built for ferries</b>Your crossing times worked into every day</li>
+    <li><b>Water and showers</b>Facilities on one map, filtered your way</li>
+    <li><b>Your van, looked after</b>MOT, insurance and tax reminders</li>
+  </ul>
+</section>
+
+<div id="features">
+<section class="feature">
+  <div class="wrap feature-grid">
+    <div class="feature-copy">
+      <p class="eyebrow reveal">Plan it for me <span class="pro-tag">PRO</span></p>
+      <h2 class="h2 reveal" style="--d:1">Tell it where.<br>It plans the rest.</h2>
+      <p class="lead reveal" style="--d:2">Pick a destination, a region or a whole country, and say how long you like to drive. Roamulus splits the journey into days and adds a campsite for every night.</p>
+      <ul class="points reveal" style="--d:3">
+        <li><span><b>Sights on the way.</b> Castles, beaches and viewpoints, slotted into each day.</span></li>
+        <li><span><b>Swap anything.</b> Don’t fancy a campsite? Pick another nearby.</span></li>
+        <li><span><b>Kids or the dog coming?</b> It finds places they’ll love too.</span></li>
+      </ul>
+    </div>
+    <div class="feature-visual reveal" style="--d:1">
+      <figure class="iphone"><img src="/assets/app/stops.webp" alt="A Kent to Paris trip planned day by day, with weather for each stop and a suggested place to visit" width="660" height="1434" loading="lazy"></figure>
+    </div>
+  </div>
+</section>
+
+<section class="feature flip">
+  <div class="wrap feature-grid">
+    <div class="feature-copy">
+      <p class="eyebrow reveal">Ferries and Eurotunnel</p>
+      <h2 class="h2 reveal" style="--d:1">Your crossing,<br>worked in.</h2>
+      <p class="lead reveal" style="--d:2">Add your sailing or Le Shuttle and every day is planned around it, with check-in times and arrival in local time. No crossing booked yet? Plan it for me picks one for you.</p>
+      <ul class="points reveal" style="--d:3">
+        <li><span><b>Right side of the water.</b> Stops stay where they belong on each day.</span></li>
+        <li><span><b>Check-in and arrival times.</b> Outbound and return, side by side.</span></li>
+        <li><span><b>Wind on crossing day.</b> Rough weather gets flagged before you go.</span></li>
+      </ul>
+    </div>
+    <div class="feature-visual reveal" style="--d:1">
+      <figure class="iphone"><img src="/assets/app/ferry.webp" alt="Trip summary showing the outbound Dover to Calais ferry and the return crossing with check-in and arrival times" width="660" height="1434" loading="lazy"></figure>
+    </div>
+  </div>
+</section>
+
+<section class="feature">
+  <div class="wrap feature-grid">
+    <div class="feature-copy">
+      <p class="eyebrow reveal">Explore</p>
+      <h2 class="h2 reveal" style="--d:1">Never hunt for<br>water again.</h2>
+      <p class="lead reveal" style="--d:2">Campsites, fresh water, showers, toilets, waste disposal, fuel, shops and somewhere to stay tonight, all on one map. Plus garages, vets and pharmacies for the days that don’t go to plan.</p>
+      <ul class="points reveal" style="--d:3">
+        <li><span><b>Filter by what you need.</b> Water, showers, hook-up and more. <span class="muted">(Pro)</span></span></li>
+        <li><span><b>Works with your sat-nav.</b> Open any place in Apple Maps, Google Maps or Waze.</span></li>
+      </ul>
+    </div>
+    <div class="feature-visual reveal" style="--d:1">
+      <figure class="iphone"><img src="/assets/app/filters.webp" alt="Campsite options with fresh water and showers switched on" width="660" height="1434" loading="lazy"></figure>
+    </div>
+  </div>
+</section>
+
+<section class="feature flip">
+  <div class="wrap feature-grid">
+    <div class="feature-copy">
+      <p class="eyebrow reveal">My Van</p>
+      <h2 class="h2 reveal" style="--d:1">Your van,<br>looked after.</h2>
+      <p class="lead reveal" style="--d:2">Water, waste, battery and gas at a glance. MOT, insurance and tax countdowns, with a nudge before anything’s due. When the coffee runs low, it goes straight on the shopping list.</p>
+      <ul class="points reveal" style="--d:3">
+        <li><span><b>Look up a UK van</b> by its registration and the details fill themselves in.</span></li>
+        <li><span><b>Gear and packing</b> lists you can reuse for every trip.</span></li>
+      </ul>
+    </div>
+    <div class="feature-visual reveal" style="--d:1">
+      <figure class="iphone"><img src="/assets/app/van.webp" alt="My Van showing water, waste water, battery and gas levels for a Citroën Dispatch" width="660" height="1434" loading="lazy"></figure>
+    </div>
+  </div>
+</section>
+</div>
+
+<section class="more">
+  <div class="wrap">
+    <div class="more-head">
+      <p class="eyebrow reveal">And the little things</p>
+      <h2 class="h2 reveal" style="--d:1">Everything for the road, in one place.</h2>
+    </div>
+    <div class="cards">
+      <article class="card reveal"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg></span><h3 class="h3">Help in any country</h3><p>Police, ambulance and fire numbers for over 240 countries. Works with no signal. Free for everyone, always.</p></article>
+      <article class="card reveal" style="--d:1"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 1 0-1.4-8.8A6 6 0 1 0 6 16.9"/><path d="M12 12v9M8.5 15.5 12 12l3.5 3.5"/></svg></span><h3 class="h3">Weather for every stop</h3><p>The forecast for the day you’ll be there, storm warnings on your route, and indoor ideas when it pours.</p></article>
+      <article class="card reveal" style="--d:2"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17.5" cy="9" r="2.5"/><path d="M16 14.2a5 5 0 0 1 6 4.8"/></svg></span><h3 class="h3">Share with your partner</h3><p>Share a trip and the shopping list. Your travel partner joins for free. <span class="muted">(Pro)</span></p></article>
+      <article class="card reveal"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h3"/></svg></span><h3 class="h3">Trip budget</h3><p>Set a budget by category and log what you spend from any stop. <span class="muted">(Pro)</span></p></article>
+      <article class="card reveal" style="--d:1"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><h3 class="h3">Packing lists</h3><p>Checklists for every trip, and reusable lists for the ones you take again and again.</p></article>
+      <article class="card reveal" style="--d:2"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span><h3 class="h3">Trip diary</h3><p>Notes and photos of the places you’ll want to go back to. Every finished trip becomes a milestone.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="wrap">
+    <div class="pricing-head">
+      <p class="eyebrow reveal">Pricing</p>
+      <h2 class="h2 reveal" style="--d:1">Free to roam.</h2>
+      <p class="lead reveal" style="--d:2">Everything you need for a trip is free. Add Pro when you’d rather Roamulus did the planning.</p>
+    </div>
+    <div class="plans">
+      <article class="plan reveal">
+        <h3>Free</h3>
+        <p class="price">£0</p>
+        <p class="price-alt">No account needed</p>
+        <ul>
+          <li>One trip at a time, and every trip you’ve ever taken</li>
+          <li>Explore: campsites, water, showers, fuel and shops</li>
+          <li>Your van: levels, renewals and a shopping list</li>
+          <li>Emergency numbers for over 240 countries</li>
+          <li>Packing checklists and a trip diary</li>
+        </ul>
+      </article>
+      <article class="plan plan-pro reveal" style="--d:1">
+        <span class="badge">Everything in Free, plus</span>
+        <h3>Pro</h3>
+        <p class="price">£3.99<small> / month</small></p>
+        <p class="price-alt">or £24.99 a year, or £59.99 once</p>
+        <ul>
+          <li>Plan it for me, with a campsite for every night</li>
+          <li>Unlimited trips and trip reminders</li>
+          <li>Facility filters for overnight stops</li>
+          <li>Sharing with your partner, free for them</li>
+          <li>Expenses, reusable packing lists, more than one van</li>
+          <li>iCloud sync, and itinerary and GPX exports</li>
+        </ul>
+        <p class="plan-note">UK prices. Subscriptions renew until cancelled in your Apple Account settings.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="switch">
+  <div class="wrap">
+    <div class="switch-box reveal">
+      <p><b>Used Vanlife Companion?</b> It’s now Roamulus. Save a backup in Vanlife Companion and restore it in Roamulus, and your trips come with you.</p>
+      <a class="btn btn-quiet" href="/support/#moving">How to move across</a>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="wrap faq-grid">
+    <div class="faq-head">
+      <p class="eyebrow">FAQ</p>
+      <h2 class="h2">Good to know.</h2>
+      <p class="muted">Anything else? <a href="/support/">Visit support</a> or email <a href="mailto:hello@roamulus.com">hello@roamulus.com</a>.</p>
+    </div>
+    <div>
+      <details><summary>Does Roamulus plan around my ferry?</summary><p>Yes, with Pro. Tell Plan it for me which Channel crossing you’ve booked, or leave it blank and it picks one. Each day’s stops stay on the right side of the water, and the crossing goes into your trip budget.</p></details>
+      <details><summary>Does it work offline?</summary><p>Your trips, van records and the emergency numbers are kept on your phone, so they’re there with no signal. Maps, searches and weather need a connection, so download offline maps in Apple Maps before you go.</p></details>
+      <details><summary>Do I need an account?</summary><p>No. Your trips and van records stay on your phone, and in your own iCloud if you turn on sync. There are no ads. <a href="/privacy/">Read the privacy policy</a>.</p></details>
+      <details><summary>I used Vanlife Companion. Can I bring my trips?</summary><p>Yes. Save a backup in Vanlife Companion and restore it in Roamulus. If you used iCloud sync, your trips appear when you turn on sync in Roamulus, which is part of Pro. Purchases can’t move between apps, because Apple treats Roamulus as a new app. <a href="/support/#moving">How to move across</a>.</p></details>
+      <details><summary>Which devices can I use?</summary><p>Any iPhone running iOS 17 or later. An Android version is in development: <a href="mailto:hello@roamulus.com?subject=Android%20waitlist">email us to hear when it’s ready</a>.</p></details>
+      <details><summary>Why is it called Roamulus?</summary><p>It’s Romulus, the founder of Rome, with a little more roam in him. The Romans made camp at the end of every day’s march. Roamulus finds yours.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="wrap inner">
+    <img class="app-icon reveal" src="/assets/icon.png" alt="" width="96" height="96">
+    <h2 class="h2 reveal" style="--d:1">All roads lead to <span class="gold">Roamulus.</span></h2>
+    <p class="lead reveal" style="--d:2">Coming soon to iPhone. Drop us a line and we’ll tell you the day it’s out.</p>
+    <a class="btn btn-primary reveal" style="--d:3" href="mailto:hello@roamulus.com?subject=Tell%20me%20when%20Roamulus%20launches">Tell me when it’s out</a>
+  </div>
+</section>
+
 </main>
+
 <footer class="footer">
   <div class="wrap footer-row">
-    <p>© 2026 Roamulus · Made in Britain</p>
-    <nav aria-label="Footer"><a href="mailto:hello@roamulus.com">hello@roamulus.com</a><a href="/support/">Support</a><a href="/privacy/">Privacy</a><a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">Terms</a></nav>
+    <a class="logo" href="/"><img src="/assets/icon-96.png" alt="" width="30" height="30">Roamulus</a>
+    <nav aria-label="Footer">
+      <a href="/support/">Support</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">Terms</a>
+      <a href="mailto:hello@roamulus.com">hello@roamulus.com</a>
+    </nav>
+  </div>
+  <div class="wrap">
+    <p class="note">© 2026 Roamulus · Made in Britain. This site uses no cookies, analytics or ads.</p>
   </div>
 </footer>
 </body>
