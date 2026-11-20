@@ -47,7 +47,7 @@ button{font:inherit;color:inherit}
 .nav.is-scrolled{background:rgba(10,12,15,.72);border-color:var(--line);-webkit-backdrop-filter:saturate(1.6) blur(18px);backdrop-filter:saturate(1.6) blur(18px)}
 .nav-inner{display:flex;align-items:center;gap:28px;height:68px}
 .logo{display:flex;align-items:center;gap:10px;font-weight:650;font-size:18px;letter-spacing:-.01em;text-decoration:none;margin-right:auto}
-.logo img{width:30px;height:30px;border-radius:8px}
+.logo img{width:30px;height:30px}
 .nav-links{display:flex;gap:26px;font-size:15px;color:var(--text-2)}
 .nav-links a{text-decoration:none;transition:color .2s}
 .nav-links a:hover{color:var(--text)}
