@@ -25,10 +25,4 @@
     }, { passive: true });
   }
 
-  // App Store click counter: button and day only, no cookies or visitor IDs.
-  for (const link of document.querySelectorAll('[data-store-source]')) {
-    const send = () => fetch('/events/app-store/' + link.dataset.storeSource, { method: 'POST', keepalive: true, credentials: 'omit' }).catch(() => {});
-    link.addEventListener('click', send);
-    link.addEventListener('auxclick', e => { if (e.button === 1) send(); });
-  }
 })();
