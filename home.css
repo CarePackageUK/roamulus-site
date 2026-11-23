@@ -190,8 +190,6 @@ button{font:inherit;color:inherit}
 .hero .iphone-lg{--ry:-8deg;--rx:4deg}
 
 /* launch state: the app isn't on the App Store yet */
-.btn-soon{background:var(--surface);color:var(--text);box-shadow:inset 0 0 0 1px rgba(240,184,89,.45);cursor:default}
-.btn-soon svg{width:19px;height:19px;color:var(--gold)}
 .footer .logo{margin-right:0;color:var(--text)}
 .closing .h2{max-width:14em}
 @media (max-width:960px){.hero .iphone-lg{--ry:0deg;--rx:0deg;width:min(300px,82%)}}
