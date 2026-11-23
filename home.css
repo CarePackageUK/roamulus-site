@@ -195,3 +195,4 @@ button{font:inherit;color:inherit}
 .footer .logo{margin-right:0;color:var(--text)}
 .closing .h2{max-width:14em}
 @media (max-width:960px){.hero .iphone-lg{--ry:0deg;--rx:0deg;width:min(300px,82%)}}
+.closing .platforms{font-size:14px;color:var(--text-3)}
