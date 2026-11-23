@@ -123,11 +123,6 @@ button{font:inherit;color:inherit}
 .plan-note{margin-top:14px;font-size:13px;color:var(--text-3)}
 .badge{position:absolute;top:-12px;right:26px;padding:5px 12px;border-radius:999px;background:var(--gold);color:var(--gold-ink);font-size:12px;font-weight:700}
 
-/* switch note */
-.switch{padding:0 0 clamp(80px,10vw,120px)}
-.switch-box{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;padding:28px 32px;border-radius:22px;border:1px solid var(--line);background:var(--surface)}
-.switch-box p{color:var(--text-2);max-width:60ch}
-.switch-box b{color:var(--text)}
 
 /* faq */
 .faq{padding:clamp(80px,10vw,130px) 0;border-top:1px solid var(--line)}
