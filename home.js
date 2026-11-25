@@ -25,4 +25,14 @@
     }, { passive: true });
   }
 
+  // The camp scene drifts a little slower than the page.
+  const scene = document.querySelector('.hero .scene img');
+  if (scene && !still) {
+    let ticking = false;
+    addEventListener('scroll', () => {
+      if (ticking) return; ticking = true;
+      requestAnimationFrame(() => { scene.style.setProperty('--py', `${Math.min(scrollY, 900) * .25}px`); ticking = false; });
+    }, { passive: true });
+  }
+
 })();

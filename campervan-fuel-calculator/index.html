@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campervan Fuel Cost Calculator (UK MPG) | Roamulus</title>
+<meta name="description" content="Estimate campervan fuel use and cost from mileage, UK mpg and pounds per litre. See the formula and a worked example.">
+<link rel="canonical" href="https://roamulus.com/campervan-fuel-calculator/">
+<meta name="theme-color" content="#0c1e22">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Campervan Fuel Cost Calculator (UK MPG)">
+<meta property="og:description" content="Estimate campervan fuel use and cost from mileage, UK mpg and pounds per litre. See the formula and a worked example.">
+<meta property="og:url" content="https://roamulus.com/campervan-fuel-calculator/">
+<meta property="og:image" content="https://roamulus.com/assets/og.jpg">
+<link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="stylesheet" href="/style.css">
+<script defer src="/guides.js"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Roamulus","item":"https://roamulus.com/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://roamulus.com/#guides"},{"@type":"ListItem","position":3,"name":"Fuel calculator","item":"https://roamulus.com/campervan-fuel-calculator/"}]}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="logo" href="/"><img src="/assets/logo.svg" alt="" width="30" height="30">Roamulus</a>
+    <nav aria-label="Site"><a href="/#guides">Guides</a><a href="/support/">Support</a></nav>
+  </div>
+</header>
+<main id="main">
+<section class="page-head">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Roamulus</a> / <a href="/#guides">Guides</a> / Fuel calculator</nav>
+    <p class="eyebrow">Calculator</p>
+    <h1>Campervan Fuel Cost Calculator (UK MPG)</h1>
+    <p class="lead">Estimate campervan fuel use and cost from mileage, UK mpg and pounds per litre. See the formula and a worked example.</p>
+  </div>
+</section>
+<div class="wrap guide">
+<article><form class="fuel-calc" id="guide-fuel">
+  <label>Distance (miles)<input id="guide-distance" name="distance" type="number" min="0" max="100000" step="any" value="45" required></label>
+  <label>Fuel economy (UK mpg)<input id="guide-mpg" name="mpg" type="number" min="0.1" max="500" step="any" value="28" required></label>
+  <label>Fuel price (£ per litre)<input id="guide-price" name="price" type="number" min="0" max="100" step="any" value="1.50" required></label>
+  <button class="btn" type="submit">Calculate fuel cost</button>
+  <output for="guide-distance guide-mpg guide-price" aria-live="polite">7.3 litres · £10.96 estimated fuel cost</output>
+  <noscript><p>Use the formula below to calculate an estimate.</p></noscript>
+</form>
+<h2>How to estimate campervan fuel cost</h2>
+<p>Divide miles by UK mpg to get imperial gallons. Multiply by 4.54609 for litres, then multiply by the fuel price per litre for an estimated cost. The calculator starts with an example price of £1.50 per litre. Replace it with your own price.</p>
+<h2>Worked example</h2>
+<p>A 45-mile drive at 28 UK mpg uses about 7.3 litres. At £1.50 per litre that comes to about £10.96, calculated before rounding the litres. If a return trip takes the same route, enter 90 miles for the total.</p>
+<p class="guide-note">Use fuel economy from a similar journey if you have it. Hills, load, speed and traffic can change actual fuel use.</p>
+</article>
+<aside class="guide-side">
+  <div class="guide-cta glass"><img src="/assets/icon.png" alt="" width="56" height="56"><h2>Plan it in Roamulus</h2><p>Roamulus plans the drive, finds a campsite for every night and works around your ferry. Free on iPhone.</p><a class="btn" href="https://apps.apple.com/gb/app/id6836801511"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.6s-2.5-1-2.5-3.8zM14.1 5.7c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.7 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.5 2.7-1.3z"/></svg>Download on the App Store</a></div>
+  <nav class="guide-more glass" aria-label="More guides"><h2>More guides</h2><a href="/campervan-nc500-itinerary/">NC500 itinerary</a><a href="/campervan-overnight-parking-scotland/">Overnight parking in Scotland</a><a href="/campervan-route-planner/">Route planner</a><a href="/campervan-packing-list/">Packing list</a></nav>
+</aside>
+</div>
+</main>
+<footer class="footer">
+  <div class="wrap footer-row">
+    <p>© 2026 Roamulus · Made in Britain</p>
+    <nav aria-label="Footer"><a href="mailto:hello@roamulus.com">hello@roamulus.com</a><a href="/support/">Support</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></nav>
+  </div>
+  <nav class="wrap social" aria-label="Roamulus on social media"><span>@RoamulusApp on</span><a href="https://www.instagram.com/roamulusapp/" rel="me noopener">Instagram</a><a href="https://www.threads.com/@roamulusapp" rel="me noopener">Threads</a><a href="https://www.tiktok.com/@roamulusapp" rel="me noopener">TikTok</a><a href="https://www.facebook.com/RoamulusApp" rel="me noopener">Facebook</a><a href="https://www.pinterest.com/roamulusapp/" rel="me noopener">Pinterest</a></nav>
+</footer>
+</body>
+</html>
