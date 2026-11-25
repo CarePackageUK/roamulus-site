@@ -72,3 +72,8 @@ a{color:var(--gold)}
   .topics a{border:1px solid var(--line)}
   .page-head{padding-top:48px}
 }
+
+.social{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;margin-top:16px;font-size:14px}
+.social span{color:var(--text-3)}
+.social a{color:var(--text-2);text-decoration:none}
+.social a:hover{color:var(--gold)}
