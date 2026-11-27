@@ -336,3 +336,83 @@ html { scroll-padding-top: 110px; }
   .is-journey .scene { position: absolute; height: auto; background: none; }
   .is-journey canvas, .is-journey .road-cue, .is-journey .valley-mist { display: none; }
 }
+
+/* A full-width product chapter marks the end of the Highlands route. */
+.app-intro {
+  position: relative;
+  overflow: hidden;
+  color: #141c21;
+  background: #eeeae0;
+  border-top: 5px solid var(--gold);
+}
+.app-intro-grid {
+  display: grid;
+  grid-template-columns: minmax(0, .92fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(18px, 4vw, 64px);
+  min-height: min(770px, 100svh);
+  padding-block: clamp(52px, 8vw, 110px);
+}
+.app-intro-copy { position: relative; z-index: 1; }
+.app-intro .eyebrow { color: #69502c; margin-bottom: 22px; }
+.app-intro h2 {
+  font-size: clamp(3.35rem, 6.4vw, 6.7rem);
+  font-weight: 780;
+  line-height: .9;
+  letter-spacing: -.075em;
+}
+.app-intro h2 span { color: #5c6567; }
+.app-intro .lead { color: #384348; max-width: 33ch; margin-top: 28px; }
+.app-download { margin-top: 24px; background: #141c21; color: #fff; }
+.app-download:hover { background: #39474d; }
+.app-download:focus-visible { outline-color: #141c21; }
+.app-intro-visual {
+  position: relative;
+  display: grid;
+  grid-template: 1fr / 1fr;
+  place-items: center;
+  min-height: clamp(440px, 48vw, 590px);
+  isolation: isolate;
+}
+.app-intro-visual::before {
+  content: '';
+  position: absolute;
+  inset: 11% -18% 10% 7%;
+  z-index: -1;
+  background: linear-gradient(125deg,#152027,#334b54);
+  transform: skewX(-9deg);
+}
+.app-intro-visual .iphone {
+  grid-area: 1 / 1;
+  width: min(var(--phone-size), 53%);
+  padding: 1.5%;
+  background: #1b292f;
+  border-color: #52646b;
+  box-shadow: 0 20px 42px rgb(11 17 23 / .34);
+  transform: translateX(var(--phone-x)) rotate(var(--phone-turn));
+}
+.app-intro-map { --phone-size: 215px; --phone-x: 37%; --phone-turn: 12deg; z-index: 1; }
+.app-intro-home { --phone-size: 235px; --phone-x: -32%; --phone-turn: -9deg; z-index: 2; }
+#features > .strip { margin-top: clamp(24px, 5vw, 56px); }
+
+@keyframes app-arrival {
+  from { transform: translateY(95px) translateX(var(--phone-x)) rotate(0deg) scale(.91); }
+  to { transform: translateX(var(--phone-x)) rotate(var(--phone-turn)); }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .app-intro-visual .iphone {
+      animation: app-arrival 1s var(--ease) both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 85%;
+    }
+    .app-intro-map { animation-range: entry 10% entry 92%; }
+  }
+}
+@media (max-width: 760px) {
+  .app-intro-grid { grid-template-columns: minmax(0, 1fr); padding-block: 48px; }
+  .app-intro h2 { font-size: clamp(3.05rem, 10vw, 4.75rem); }
+  .app-intro-visual { min-height: clamp(370px, 82vw, 530px); }
+  .app-intro-visual::before { inset: 13% -12% 9% 10%; }
+  .app-intro-visual .iphone { width: min(var(--phone-size), 46%); }
+}

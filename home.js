@@ -45,7 +45,7 @@
     }
     loading = true;
     try {
-      const {createHighlandJourney} = await import('./highland-camera.js?v=3');
+      const {createHighlandJourney} = await import('./highland-camera.js?v=4');
       render = await createHighlandJourney(scene, photograph);
       if (render) scheduleFrame();
     } catch {

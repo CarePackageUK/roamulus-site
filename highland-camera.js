@@ -5,6 +5,7 @@ uniform vec2 fit;
 uniform vec2 framing;
 uniform vec3 camera;
 uniform float overscan;
+uniform vec3 bank;
 out vec2 uv;
 
 void main() {
@@ -12,7 +13,9 @@ void main() {
   vec2 screen = vec2(uv.x * 2.0 - 1.0, 1.0 - uv.y * 2.0) * fit * overscan + framing;
   float distance = mix(5.0, 1.18, pow(point.z, 1.45));
   vec3 view = vec3(screen * distance, distance) - camera;
-  gl_Position = vec4(view.xy, view.z - 1.0, view.z);
+  vec2 level = vec2(view.x * bank.z, view.y);
+  vec2 rolled = mat2(bank.x, bank.y, -bank.y, bank.x) * level;
+  gl_Position = vec4(rolled.x / bank.z, rolled.y, view.z - 1.0, view.z);
 }`;
 
 const fragmentShader = `#version 300 es
@@ -96,6 +99,7 @@ async function createCamera(canvas, source, depthFile, pose) {
   const fit = gl.getUniformLocation(program, 'fit');
   const framing = gl.getUniformLocation(program, 'framing');
   const camera = gl.getUniformLocation(program, 'camera');
+  const bank = gl.getUniformLocation(program, 'bank');
   const overscan = gl.getUniformLocation(program, 'overscan');
   const imageAspect = photograph.naturalWidth / photograph.naturalHeight;
 
@@ -119,12 +123,17 @@ async function createCamera(canvas, source, depthFile, pose) {
     gl.uniform2f(fit, horizontal, vertical);
     gl.uniform2f(framing, ...view.frame);
     gl.uniform3f(camera, ...view.position);
+    const cosine = Math.cos(view.roll);
+    const sine = Math.sin(view.roll);
+    gl.uniform3f(bank, cosine, sine, aspect);
+    const widthAtBank = cosine + Math.abs(sine) / aspect;
+    const heightAtBank = cosine + Math.abs(sine) * aspect;
     // Cover the viewport at both ends of the depth range as the camera turns.
     const coverage = [1.18, 5].flatMap(distance => {
       const extent = 1 - view.position[2] / distance;
       return [
-        (extent + Math.abs(view.frame[0] - view.position[0] / distance)) / horizontal,
-        (extent + Math.abs(view.frame[1] - view.position[1] / distance)) / vertical
+        (extent * widthAtBank + Math.abs(view.frame[0] - view.position[0] / distance)) / horizontal,
+        (extent * heightAtBank + Math.abs(view.frame[1] - view.position[1] / distance)) / vertical
       ];
     });
     gl.uniform1f(overscan, Math.max(view.overscan, ...coverage));
@@ -137,30 +146,31 @@ const clamp = value => Math.max(0, Math.min(1, value));
 const smoothstep = value => value * value * (3 - 2 * value);
 
 function approach(progress, mobile, horizontal, vertical) {
-  const travel = progress * (2 - progress);
+  const approach = smoothstep(progress);
+  const turn = smoothstep(clamp((progress - .26) / .74));
+  const swing = Math.sin(Math.PI * turn);
   return {
     frame: [
-      -(mobile ? .38 : .32) * (horizontal - 1) + (mobile ? .9 : .43) * travel,
-      (mobile ? 0 : .08) * (vertical - 1) + .12 * travel
+      -(mobile ? .38 : .32) * (horizontal - 1) + (mobile ? 1.04 : .49) * turn,
+      (mobile ? 0 : .08) * (vertical - 1) + .15 * approach
     ],
-    position: [
-      .17 * Math.sin(Math.PI * travel) - .22 * travel * travel,
-      -.14 * travel,
-      .64 * travel
-    ],
-    overscan: 1 + .19 * travel
+    position: [.18 * approach - .49 * turn, -.22 * approach, .69 * approach],
+    roll: -.039 * swing,
+    overscan: 1 + .17 * approach
   };
 }
 
 function descend(progress, mobile, horizontal, vertical) {
-  const travel = smoothstep(progress);
+  const glide = Math.sin(progress * Math.PI / 2);
+  const settle = smoothstep(progress);
   return {
     frame: [
-      -.08 * (horizontal - 1) + (mobile ? .15 : .21) * (1 - travel),
-      .18 * (vertical - 1) + .08 * travel
+      -.08 * (horizontal - 1) + (mobile ? .22 : .28) * (1 - settle) - .10 * Math.sin(Math.PI * settle),
+      .18 * (vertical - 1) + .10 * glide
     ],
-    position: [.08 * (1 - travel), -.13 * travel, .13 + .43 * travel],
-    overscan: 1.14 + .12 * travel
+    position: [.12 - .22 * settle, -.18 * glide, .10 + .48 * glide],
+    roll: -.024 * (1 - settle),
+    overscan: 1.13 + .14 * glide
   };
 }
 
@@ -173,10 +183,12 @@ export async function createHighlandJourney(scene, photograph) {
 
   return (progress, mobile) => {
     // The same transition runs in reverse when the visitor scrolls back uphill.
-    const transition = clamp((progress - .42) / .23);
+    const bendStart = .48;
+    const bendEnd = .65;
+    const transition = clamp((progress - bendStart) / (bendEnd - bendStart));
     const blend = smoothstep(transition);
-    if (transition < 1) road(clamp(progress / .65), mobile);
-    if (transition > 0) valley(clamp((progress - .42) / .58), mobile);
+    if (transition < 1) road(clamp(progress / bendEnd), mobile);
+    if (transition > 0) valley(clamp((progress - bendStart) / (1 - bendStart)), mobile);
     scene.style.setProperty('--valley-blend', blend);
     scene.style.setProperty('--valley-mist', .44 * Math.sin(Math.PI * transition) ** 2);
   };
