@@ -226,8 +226,11 @@ html { scroll-padding-top: 110px; }
   letter-spacing: .04em;
   text-transform: uppercase;
 }
-.hero { position: relative; isolation: isolate; }
+.opening { position: relative; isolation: isolate; }
+.hero { position: relative; }
 .hero-backdrop { position: absolute; inset: 0; pointer-events: none; }
+.opening:not(.is-journey) .hero-backdrop { height: max(670px, 100svh); }
+
 .hero-stage {
   position: relative;
   display: grid;
@@ -235,10 +238,10 @@ html { scroll-padding-top: 110px; }
   min-height: max(670px, 100svh);
   padding: 135px 0 96px;
 }
-.hero .scene img { object-position: 66% 54%; }
-.hero canvas { display: none; width: 100%; height: 100%; position: absolute; inset: 0; }
+.opening .scene img { object-position: 66% 54%; }
+.opening canvas { display: none; width: 100%; height: 100%; position: absolute; inset: 0; }
 .road-cue, .valley-mist { display: none; }
-.hero .valley-camera {
+.opening .valley-camera {
   mask-image: linear-gradient(270deg, #000 calc(var(--valley-blend, 0) * 145% - 45%),
     transparent calc(var(--valley-blend, 0) * 145%));
 }
@@ -249,7 +252,7 @@ html { scroll-padding-top: 110px; }
   background: radial-gradient(ellipse at 51% 58%, #8f9fa8 0, #788e9d 32%, #4e606e 85%);
   opacity: var(--valley-mist, 0);
 }
-.hero.is-journey { padding-bottom: clamp(760px, 155svh, 1760px); }
+.is-journey .hero { padding-bottom: clamp(760px, 155svh, 1760px); }
 .is-journey .scene {
   position: sticky;
   top: 0;
@@ -269,7 +272,7 @@ html { scroll-padding-top: 110px; }
   color: var(--text);
   border-radius: 3px;
   font: 400 11px/1.4 var(--mono);
-  opacity: calc(1 - var(--road-progress, 0) * .55);
+  opacity: clamp(0, 3.8 - var(--road-progress, 0) * 5, 1);
 }
 .road-cue::after {
   content: '';
@@ -278,7 +281,7 @@ html { scroll-padding-top: 110px; }
   background: linear-gradient(to right, var(--gold) calc(var(--road-progress, 0) * 100%), rgba(239,243,245,.5) 0);
 }
 .is-journey .hero-copy { transform: translateY(calc(var(--road-progress, 0) * -95px)); }
-.hero .scene::after {
+.opening .scene::after {
   --shade: var(--road-progress, 0);
   background:
     linear-gradient(90deg, rgb(11 17 23 / calc(.94 - var(--shade) * .53)), rgb(11 17 23 / calc(.79 - var(--shade) * .51)) 29%, rgb(11 17 23 / calc(.24 - var(--shade) * .14)) 56%, transparent 75%),
@@ -310,9 +313,9 @@ html { scroll-padding-top: 110px; }
   .nav-links { position: absolute; inset: auto 0 4px; display: flex; justify-content: space-between; gap: 6px; font-size: 10px; }
   .nav-links a { display: flex; align-items: center; min-height: 33px; }
   .hero-stage { min-height: 0; padding: clamp(315px, 57vw, 495px) 0 42px; align-items: end; }
-  .hero .scene { height: clamp(430px, 72vw, 610px); }
-  .hero .scene img { object-position: 69% 50%; }
-  .hero .scene::after {
+  .opening .scene { height: clamp(430px, 72vw, 610px); }
+  .opening .scene img { object-position: 69% 50%; }
+  .opening .scene::after {
     background: linear-gradient(0deg, var(--bg) 1%, rgba(16,23,29,.96) 11%, rgba(16,23,29,.4) 31%, transparent 59%);
   }
   .hero .h1 { font-size: clamp(3.65rem, 12vw, 6.5rem); }
@@ -325,25 +328,24 @@ html { scroll-padding-top: 110px; }
 }
 @media (max-width: 760px) {
   .is-journey .hero-stage { min-height: 100svh; padding-bottom: 70px; }
-  .hero.is-journey { padding-bottom: clamp(650px, 142svh, 1220px); }
-  .hero.is-journey .scene { height: 100svh; }
-  .hero.is-journey .scene::after {
+  .is-journey .hero { padding-bottom: clamp(650px, 142svh, 1220px); }
+  .opening.is-journey .scene { height: 100svh; }
+  .opening.is-journey .scene::after {
     background: linear-gradient(0deg, var(--bg), rgb(16 23 29 / calc(.87 - var(--shade) * .56)) 30%, rgb(16 23 29 / calc(.56 - var(--shade) * .44)) 52%, transparent 81%);
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero.is-journey { padding-bottom: 0; }
+  .is-journey .hero { padding-bottom: 0; }
   .is-journey .scene { position: absolute; height: auto; background: none; }
   .is-journey canvas, .is-journey .road-cue, .is-journey .valley-mist { display: none; }
 }
 
-/* A full-width product chapter marks the end of the Highlands route. */
+/* The camera and product share one backdrop until the feature walkthrough. */
 .app-intro {
   position: relative;
   overflow: hidden;
-  color: #141c21;
-  background: #eeeae0;
-  border-top: 5px solid var(--gold);
+  color: var(--text);
+  background: var(--bg);
 }
 .app-intro-grid {
   display: grid;
@@ -354,18 +356,16 @@ html { scroll-padding-top: 110px; }
   padding-block: clamp(52px, 8vw, 110px);
 }
 .app-intro-copy { position: relative; z-index: 1; }
-.app-intro .eyebrow { color: #69502c; margin-bottom: 22px; }
+.app-intro .eyebrow { color: var(--gold-2); margin-bottom: 22px; }
 .app-intro h2 {
   font-size: clamp(3.35rem, 6.4vw, 6.7rem);
   font-weight: 780;
   line-height: .9;
   letter-spacing: -.075em;
 }
-.app-intro h2 span { color: #5c6567; }
-.app-intro .lead { color: #384348; max-width: 33ch; margin-top: 28px; }
-.app-download { margin-top: 24px; background: #141c21; color: #fff; }
-.app-download:hover { background: #39474d; }
-.app-download:focus-visible { outline-color: #141c21; }
+.app-intro h2 span { color: #b3c5cf; }
+.app-intro .lead { color: var(--text-2); max-width: 33ch; margin-top: 28px; }
+.app-download { margin-top: 24px; }
 .app-intro-visual {
   position: relative;
   display: grid;
@@ -393,21 +393,24 @@ html { scroll-padding-top: 110px; }
 }
 .app-intro-map { --phone-size: 215px; --phone-x: 37%; --phone-turn: 12deg; z-index: 1; }
 .app-intro-home { --phone-size: 235px; --phone-x: -32%; --phone-turn: -9deg; z-index: 2; }
-#features > .strip { margin-top: clamp(24px, 5vw, 56px); }
+.opening + .strip { margin-top: clamp(24px, 5vw, 56px); }
 
-@keyframes app-arrival {
-  from { transform: translateY(95px) translateX(var(--phone-x)) rotate(0deg) scale(.91); }
-  to { transform: translateX(var(--phone-x)) rotate(var(--phone-turn)); }
+.is-journey .app-intro {
+  background:
+    linear-gradient(0deg, var(--bg), rgb(16 23 29 / .75) 22%, transparent 78%),
+    radial-gradient(ellipse 65% 68% at 19% 71%, rgb(11 17 23 / .83), transparent);
 }
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .app-intro-visual .iphone {
-      animation: app-arrival 1s var(--ease) both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 85%;
-    }
-    .app-intro-map { animation-range: entry 10% entry 92%; }
-  }
+.is-journey .app-intro-grid { padding-top: clamp(24px, 4vw, 54px); }
+
+.is-journey .app-intro-visual::before { display: none; }
+.is-journey .app-intro-visual .iphone { box-shadow: 0 24px 65px rgb(0 0 0 / .6); }
+
+.app-intro-home { --rise: var(--home-rise, 0); }
+.app-intro-map { --rise: var(--map-rise, 0); }
+.is-journey .app-intro-visual .iphone {
+  transform: translate(var(--phone-x), calc((1 - var(--rise)) * 122px))
+    rotate(calc(var(--phone-turn) * var(--rise))) scale(calc(.88 + var(--rise) * .12));
+  transition: none;
 }
 @media (max-width: 760px) {
   .app-intro-grid { grid-template-columns: minmax(0, 1fr); padding-block: 48px; }
@@ -415,4 +418,12 @@ html { scroll-padding-top: 110px; }
   .app-intro-visual { min-height: clamp(370px, 82vw, 530px); }
   .app-intro-visual::before { inset: 13% -12% 9% 10%; }
   .app-intro-visual .iphone { width: min(var(--phone-size), 46%); }
+}
+
+@media (max-width: 760px) {
+  .is-journey .app-intro {
+    background: linear-gradient(0deg, var(--bg), rgb(16 23 29 / .9) 36%, transparent 82%);
+  }
+  .is-journey .app-intro-grid { padding-top: 20px; }
+  .is-journey .app-intro-visual { grid-row: 1; }
 }

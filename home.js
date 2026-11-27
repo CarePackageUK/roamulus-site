@@ -1,7 +1,10 @@
 (() => {
   const nav = document.getElementById('nav');
-  const hero = document.querySelector('.hero');
-  const scene = hero.querySelector('.scene');
+  const opening = document.querySelector('.opening');
+  const hero = opening.querySelector('.hero');
+  const intro = opening.querySelector('.app-intro');
+  const scene = opening.querySelector('.scene');
+  const phones = intro.querySelector('.app-intro-visual');
   const photograph = scene.querySelector('img');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const mobile = matchMedia('(max-width: 760px)');
@@ -10,22 +13,31 @@
   let loading = false;
   let lastProgress = -1;
 
+  const clamp = value => Math.min(1, Math.max(0, value));
+  const ease = value => value * value * (3 - 2 * value);
+
   function draw() {
     frame = 0;
     nav.classList.toggle('is-scrolled', scrollY > 10);
     if (!render || reducedMotion.matches) return;
 
     // Delay the layout enhancement if somebody has already started reading.
-    if (!hero.classList.contains('is-journey')) {
+    if (!opening.classList.contains('is-journey')) {
       if (scrollY > 40) return;
-      hero.classList.add('is-journey');
+      opening.classList.add('is-journey');
     }
 
-    const travel = hero.offsetHeight - scene.clientHeight;
-    const progress = Math.min(1, Math.max(0, -hero.getBoundingClientRect().top / Math.max(1, travel)));
+    // Keep moving through the first part of the product reveal, then hold the valley behind it.
+    const height = scene.clientHeight;
+    const overlap = Math.min(height * .73, intro.offsetHeight * .66);
+    const travel = hero.offsetHeight - height + overlap;
+    const progress = clamp(-opening.getBoundingClientRect().top / Math.max(1, travel));
+    const entry = (height - phones.getBoundingClientRect().top) / (height * .6);
+    phones.style.setProperty('--home-rise', ease(clamp(entry)));
+    phones.style.setProperty('--map-rise', ease(clamp((entry - .13) / .87)));
     if (progress === lastProgress) return;
     lastProgress = progress;
-    hero.style.setProperty('--road-progress', progress);
+    opening.style.setProperty('--road-progress', progress);
     render(progress, mobile.matches);
   }
 
@@ -35,7 +47,7 @@
 
   async function startCamera() {
     if (reducedMotion.matches) {
-      hero.classList.remove('is-journey');
+      opening.classList.remove('is-journey');
       lastProgress = -1;
       return;
     }
@@ -57,7 +69,7 @@
 
   scene.addEventListener('webglcontextlost', () => {
     render = null;
-    hero.classList.remove('is-journey');
+    opening.classList.remove('is-journey');
     lastProgress = -1;
   }, true);
   addEventListener('scroll', scheduleFrame, {passive: true});

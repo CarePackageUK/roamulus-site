@@ -18,8 +18,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="preload" href="/assets/dm.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/scene/highland-road.webp" as="image">
-<link rel="stylesheet" href="/home.css?v=4">
-<script defer src="/home.js?v=4"></script>
+<link rel="stylesheet" href="/home.css?v=5">
+<script defer src="/home.js?v=5"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Roamulus: Van Trip Planner","url":"https://roamulus.com/","operatingSystem":"iOS 17 or later","applicationCategory":"TravelApplication","downloadUrl":"https://apps.apple.com/gb/app/id6836801511","offers":{"@type":"Offer","price":0,"priceCurrency":"GBP"},"sameAs":["https://www.instagram.com/roamulusapp/","https://www.threads.com/@roamulusapp","https://www.tiktok.com/@roamulusapp","https://www.facebook.com/RoamulusApp","https://www.pinterest.com/roamulusapp/"]}</script>
 </head>
 <body>
@@ -41,7 +41,7 @@
 
 <main id="main">
 
-<section class="hero">
+<div class="opening">
   <div class="hero-backdrop" aria-hidden="true">
     <div class="scene">
       <img src="/assets/scene/highland-road.webp" alt="" fetchpriority="high">
@@ -51,6 +51,7 @@
       <div class="road-cue"><span>Scroll to follow the road</span></div>
     </div>
   </div>
+<section class="hero">
   <div class="hero-stage">
     <div class="wrap hero-inner">
       <div class="hero-copy">
@@ -67,14 +68,13 @@
   </div>
 </section>
 
-<div id="features">
-<section class="app-intro" aria-labelledby="overview-title">
+<section id="features" class="app-intro" aria-labelledby="overview-title">
   <div class="wrap app-intro-grid">
     <div class="app-intro-copy">
       <p class="eyebrow">The app for iPhone</p>
       <h2 id="overview-title">Tonight’s stop.<br><span>Sorted.</span></h2>
       <p class="lead">See tonight’s campsite, how long you’ll be driving and what you need to pick up, all from Home.</p>
-      <a class="btn app-download" href="https://apps.apple.com/gb/app/id6836801511">Download on the App Store</a>
+      <a class="btn btn-primary app-download" href="https://apps.apple.com/gb/app/id6836801511">Download on the App Store</a>
     </div>
     <div class="app-intro-visual">
       <figure class="iphone app-intro-map"><img src="/assets/app/v3-explore.webp" alt="Explore map showing campsites and facilities around Saumur" width="660" height="1434" loading="lazy"></figure>
@@ -82,6 +82,7 @@
     </div>
   </div>
 </section>
+</div>
 
 <section class="strip wrap" aria-label="Highlights">
   <ul class="glass">
@@ -181,7 +182,6 @@
     </div>
   </div>
 </section>
-</div>
 
 <div class="band" aria-hidden="true"><div class="scene"><img src="/assets/scene/forest.webp" alt="" loading="lazy"></div></div>
 
