@@ -18,8 +18,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="preload" href="/assets/dm.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/scene/highland-road.webp" as="image">
-<link rel="stylesheet" href="/home.css?v=2">
-<script defer src="/home.js?v=2"></script>
+<link rel="stylesheet" href="/home.css?v=3">
+<script defer src="/home.js?v=3"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Roamulus: Van Trip Planner","url":"https://roamulus.com/","operatingSystem":"iOS 17 or later","applicationCategory":"TravelApplication","downloadUrl":"https://apps.apple.com/gb/app/id6836801511","offers":{"@type":"Offer","price":0,"priceCurrency":"GBP"},"sameAs":["https://www.instagram.com/roamulusapp/","https://www.threads.com/@roamulusapp","https://www.tiktok.com/@roamulusapp","https://www.facebook.com/RoamulusApp","https://www.pinterest.com/roamulusapp/"]}</script>
 </head>
 <body>
@@ -45,7 +45,9 @@
   <div class="hero-backdrop" aria-hidden="true">
     <div class="scene">
       <img src="/assets/scene/highland-road.webp" alt="" fetchpriority="high">
-      <canvas></canvas>
+      <canvas class="road-camera"></canvas>
+      <canvas class="valley-camera"></canvas>
+      <div class="valley-mist"></div>
       <div class="road-cue"><span>Scroll to follow the road</span></div>
     </div>
   </div>

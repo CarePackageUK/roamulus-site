@@ -9,9 +9,9 @@ out vec2 uv;
 
 void main() {
   uv = point.xy;
-  vec2 screen = vec2(uv.x * 2.0 - 1.0, 1.0 - uv.y * 2.0) * fit + framing;
+  vec2 screen = vec2(uv.x * 2.0 - 1.0, 1.0 - uv.y * 2.0) * fit * overscan + framing;
   float distance = mix(5.0, 1.18, pow(point.z, 1.45));
-  vec3 view = vec3(screen * distance * overscan, distance) - camera;
+  vec3 view = vec3(screen * distance, distance) - camera;
   gl_Position = vec4(view.xy, view.z - 1.0, view.z);
 }`;
 
@@ -25,12 +25,14 @@ void main() {
   color = texture(landscape, uv);
 }`;
 
-export async function createHighlandCamera(canvas, photograph) {
+async function createCamera(canvas, source, depthFile, pose) {
   const gl = canvas.getContext('webgl2', {alpha: false, antialias: true});
   if (!gl) return null;
 
+  const photograph = typeof source === 'string' ? new Image() : source;
+  if (typeof source === 'string') photograph.src = new URL(source, import.meta.url);
   const depth = new Image();
-  depth.src = new URL('./assets/scene/highland-depth.png', import.meta.url);
+  depth.src = new URL(depthFile, import.meta.url);
   await Promise.all([depth.decode(), photograph.decode()]);
 
   const sample = document.createElement('canvas');
@@ -113,14 +115,69 @@ export async function createHighlandCamera(canvas, photograph) {
     const aspect = width / height;
     const horizontal = Math.max(1, imageAspect / aspect);
     const vertical = Math.max(1, aspect / imageAspect);
-    const move = progress * progress * (3 - 2 * progress);
-    // Dip toward the road, then ease the view toward the bend as the van passes.
+    const view = pose(progress, mobile, horizontal, vertical);
     gl.uniform2f(fit, horizontal, vertical);
-    gl.uniform2f(framing, -(mobile ? .38 : .32) * (horizontal - 1) + (mobile ? .68 : .35) * move,
-      (mobile ? 0 : .08) * (vertical - 1) + .09 * move);
-    gl.uniform3f(camera, .20 * move + .14 * Math.sin(Math.PI * move), -.16 * move, .51 * move);
-    gl.uniform1f(overscan, 1 + .13 * move);
+    gl.uniform2f(framing, ...view.frame);
+    gl.uniform3f(camera, ...view.position);
+    // Cover the viewport at both ends of the depth range as the camera turns.
+    const coverage = [1.18, 5].flatMap(distance => {
+      const extent = 1 - view.position[2] / distance;
+      return [
+        (extent + Math.abs(view.frame[0] - view.position[0] / distance)) / horizontal,
+        (extent + Math.abs(view.frame[1] - view.position[1] / distance)) / vertical
+      ];
+    });
+    gl.uniform1f(overscan, Math.max(view.overscan, ...coverage));
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
+  };
+}
+
+const clamp = value => Math.max(0, Math.min(1, value));
+const smoothstep = value => value * value * (3 - 2 * value);
+
+function approach(progress, mobile, horizontal, vertical) {
+  const travel = progress * (2 - progress);
+  return {
+    frame: [
+      -(mobile ? .38 : .32) * (horizontal - 1) + (mobile ? .9 : .43) * travel,
+      (mobile ? 0 : .08) * (vertical - 1) + .12 * travel
+    ],
+    position: [
+      .17 * Math.sin(Math.PI * travel) - .22 * travel * travel,
+      -.14 * travel,
+      .64 * travel
+    ],
+    overscan: 1 + .19 * travel
+  };
+}
+
+function descend(progress, mobile, horizontal, vertical) {
+  const travel = smoothstep(progress);
+  return {
+    frame: [
+      -.08 * (horizontal - 1) + (mobile ? .15 : .21) * (1 - travel),
+      .18 * (vertical - 1) + .08 * travel
+    ],
+    position: [.08 * (1 - travel), -.13 * travel, .13 + .43 * travel],
+    overscan: 1.14 + .12 * travel
+  };
+}
+
+export async function createHighlandJourney(scene, photograph) {
+  const [road, valley] = await Promise.all([
+    createCamera(scene.querySelector('.road-camera'), photograph, './assets/scene/highland-depth.png', approach),
+    createCamera(scene.querySelector('.valley-camera'), './assets/scene/highland-valley.webp', './assets/scene/highland-valley-depth.png', descend)
+  ]);
+  if (!road || !valley) return null;
+
+  return (progress, mobile) => {
+    // The same transition runs in reverse when the visitor scrolls back uphill.
+    const transition = clamp((progress - .42) / .23);
+    const blend = smoothstep(transition);
+    if (transition < 1) road(clamp(progress / .65), mobile);
+    if (transition > 0) valley(clamp((progress - .42) / .58), mobile);
+    scene.style.setProperty('--valley-blend', blend);
+    scene.style.setProperty('--valley-mist', .44 * Math.sin(Math.PI * transition) ** 2);
   };
 }

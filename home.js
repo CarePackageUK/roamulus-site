@@ -1,8 +1,8 @@
 (() => {
   const nav = document.getElementById('nav');
   const hero = document.querySelector('.hero');
-  const canvas = hero.querySelector('canvas');
-  const photograph = hero.querySelector('.scene img');
+  const scene = hero.querySelector('.scene');
+  const photograph = scene.querySelector('img');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const mobile = matchMedia('(max-width: 760px)');
   let frame = 0;
@@ -21,7 +21,7 @@
       hero.classList.add('is-journey');
     }
 
-    const travel = hero.offsetHeight - canvas.clientHeight;
+    const travel = hero.offsetHeight - scene.clientHeight;
     const progress = Math.min(1, Math.max(0, -hero.getBoundingClientRect().top / Math.max(1, travel)));
     if (progress === lastProgress) return;
     lastProgress = progress;
@@ -45,8 +45,8 @@
     }
     loading = true;
     try {
-      const {createHighlandCamera} = await import('./highland-camera.js');
-      render = await createHighlandCamera(canvas, photograph);
+      const {createHighlandJourney} = await import('./highland-camera.js?v=3');
+      render = await createHighlandJourney(scene, photograph);
       if (render) scheduleFrame();
     } catch {
       // The photograph is already present if the optional camera cannot load.
@@ -55,11 +55,11 @@
     }
   }
 
-  canvas.addEventListener('webglcontextlost', () => {
+  scene.addEventListener('webglcontextlost', () => {
     render = null;
     hero.classList.remove('is-journey');
     lastProgress = -1;
-  });
+  }, true);
   addEventListener('scroll', scheduleFrame, {passive: true});
   addEventListener('resize', () => {
     lastProgress = -1;
