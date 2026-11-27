@@ -7,8 +7,6 @@
   const screenFlight = intro.querySelector('.screen-flight');
   const screen = intro.querySelector('.app-intro-home img');
   const route = screenFlight.querySelector('.flight-route');
-  const campsite = screenFlight.querySelector('.flight-camp');
-  const routeCanvas = route.querySelector('canvas');
   const routeStop = route.querySelector('.route-stop');
   const routeNote = route.querySelector('.route-note');
   const scene = opening.querySelector('.scene');
@@ -38,10 +36,9 @@
     intro.style.setProperty('--intro-pin', `${pinTop}px`);
 
     const runway = sequence.offsetHeight - intro.offsetHeight;
-    const progress = clamp((pinTop - sequence.getBoundingClientRect().top) / Math.max(1, runway));
-    if (progress === lastDive) return;
-    lastDive = progress;
-    const dive = clamp(progress / .74);
+    const dive = clamp((pinTop - sequence.getBoundingClientRect().top) / Math.max(1, runway));
+    if (dive === lastDive) return;
+    lastDive = dive;
     if (dive === 0) {
       screenFlight.style.setProperty('--dive-visible', 0);
       return;
@@ -74,7 +71,7 @@
     screenFlight.style.setProperty('--words-1', between(dive, .32, .37));
     screenFlight.style.setProperty('--words-2', between(dive, .36, .41));
     screenFlight.style.setProperty('--words-3', between(dive, .40, .45));
-    screenFlight.style.setProperty('--dive-exit', between(progress, .962, 1));
+    screenFlight.style.setProperty('--dive-exit', between(dive, .95, 1));
     screenFlight.style.setProperty('--story-top', `${-pinTop}px`);
     screenFlight.style.setProperty('--story-height', `${height}px`);
     const open = between(dive, .57, .65);
@@ -85,18 +82,9 @@
         [routeStop.textContent, routeNote.textContent] = waypoints[waypoint];
         lastWaypoint = waypoint;
       }
-      const siteZoom = between(progress, .685, .76);
-      renderRoute(clamp((dive - .60) / .175), clamp((dive - .804) / .121), between(dive, .774, .806), siteZoom);
+      renderRoute(clamp((dive - .60) / .175), clamp((dive - .804) / .121), between(dive, .774, .806));
     }
 
-    const arrival = between(progress, .748, .818);
-    const parking = between(progress, .777, .927);
-    const frameTop = campsite.getBoundingClientRect().top;
-    const map = routeCanvas.getBoundingClientRect();
-    campsite.style.setProperty('--pin-y', `${map.top + map.height / 2 - frameTop}px`);
-    campsite.style.setProperty('--camp-reveal', arrival);
-    campsite.style.setProperty('--parking', parking);
-    campsite.style.setProperty('--camp-caption', between(progress, .88, .948));
   }
 
   function draw() {
@@ -144,9 +132,9 @@
     try {
       const [{createHighlandJourney}, {createDayOneMap}] = await Promise.all([
         import('./highland-camera.js?v=4'),
-        import('./day-one-map.js?v=9')
+        import('./day-one-map.js')
       ]);
-      renderRoute = createDayOneMap(routeCanvas);
+      renderRoute = createDayOneMap(route.querySelector('canvas'));
       if (renderRoute) render = await createHighlandJourney(scene, photograph);
       if (render) scheduleFrame();
     } catch {
