@@ -6,6 +6,9 @@
   const intro = sequence.querySelector('.app-intro');
   const screenFlight = intro.querySelector('.screen-flight');
   const screen = intro.querySelector('.app-intro-home img');
+  const route = screenFlight.querySelector('.flight-route');
+  const routeStop = route.querySelector('.route-stop');
+  const routeNote = route.querySelector('.route-note');
   const scene = opening.querySelector('.scene');
   const phones = intro.querySelector('.app-intro-visual');
   const photograph = scene.querySelector('img');
@@ -16,6 +19,13 @@
   let loading = false;
   let lastProgress = -1;
   let lastDive = -1;
+  let renderRoute = null;
+  let lastWaypoint = -1;
+  const waypoints = [
+    ['Portsmouth to Caen', 'Across the Channel to Ouistreham.'],
+    ['Caen ferry port', 'Off the ferry and onto the roads of Ouistreham.'],
+    ['Aire Camping-Car Ouistreham', 'Your first overnight stop.']
+  ];
 
   const clamp = value => Math.min(1, Math.max(0, value));
   const ease = value => value * value * (3 - 2 * value);
@@ -40,12 +50,12 @@
     const screenHeight = screen.offsetHeight;
     const x = display.left + display.width / 2 - frame.left;
     const y = display.top + display.height / 2 - frame.top;
-    const advance = between(dive, 0, .34);
+    const advance = between(dive, 0, .25);
     // Aim at Home’s Speak it control so the push-in leads naturally to Lupa.
     const zoom = Math.max(frame.width / width * 1.4, height / screenHeight * 1.22);
     const targetX = frame.width / 2 + width * .115 * zoom;
     const targetY = height / 2 - pinTop - screenHeight * .002 * zoom;
-    const tap = between(dive, .29, .36) * (1 - between(dive, .37, .45));
+    const tap = between(dive, .21, .26) * (1 - between(dive, .27, .33));
 
     screenFlight.style.setProperty('--screen-width', `${width}px`);
     screenFlight.style.setProperty('--screen-x', `${x + (targetX - x) * advance}px`);
@@ -56,14 +66,25 @@
     screenFlight.style.setProperty('--dive-shade', between(dive, 0, .31));
     screenFlight.style.setProperty('--tap', tap);
     screenFlight.style.setProperty('--tap-scale', 1.18 - tap * .33);
-    screenFlight.style.setProperty('--story-in', between(dive, .39, .48));
-    screenFlight.style.setProperty('--plan-in', between(dive, .69, .79));
-    screenFlight.style.setProperty('--words-1', between(dive, .44, .51));
-    screenFlight.style.setProperty('--words-2', between(dive, .50, .57));
-    screenFlight.style.setProperty('--words-3', between(dive, .56, .63));
-    screenFlight.style.setProperty('--dive-exit', between(dive, .91, 1));
+    screenFlight.style.setProperty('--story-in', between(dive, .28, .35));
+    screenFlight.style.setProperty('--plan-in', between(dive, .48, .55));
+    screenFlight.style.setProperty('--words-1', between(dive, .32, .37));
+    screenFlight.style.setProperty('--words-2', between(dive, .36, .41));
+    screenFlight.style.setProperty('--words-3', between(dive, .40, .45));
+    screenFlight.style.setProperty('--dive-exit', between(dive, .95, 1));
     screenFlight.style.setProperty('--story-top', `${-pinTop}px`);
     screenFlight.style.setProperty('--story-height', `${height}px`);
+    const open = between(dive, .57, .65);
+    route.style.setProperty('--route-open', open);
+    if (open > 0) {
+      const waypoint = dive >= .925 ? 2 : dive >= .777 ? 1 : 0;
+      if (waypoint !== lastWaypoint) {
+        [routeStop.textContent, routeNote.textContent] = waypoints[waypoint];
+        lastWaypoint = waypoint;
+      }
+      renderRoute(clamp((dive - .60) / .175), clamp((dive - .804) / .121), between(dive, .774, .806));
+    }
+
   }
 
   function draw() {
@@ -109,8 +130,12 @@
     }
     loading = true;
     try {
-      const {createHighlandJourney} = await import('./highland-camera.js?v=4');
-      render = await createHighlandJourney(scene, photograph);
+      const [{createHighlandJourney}, {createDayOneMap}] = await Promise.all([
+        import('./highland-camera.js?v=4'),
+        import('./day-one-map.js')
+      ]);
+      renderRoute = createDayOneMap(route.querySelector('canvas'));
+      if (renderRoute) render = await createHighlandJourney(scene, photograph);
       if (render) scheduleFrame();
     } catch {
       // The photograph is already present if the optional camera cannot load.

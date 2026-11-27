@@ -239,7 +239,7 @@ html { scroll-padding-top: 110px; }
   padding: 135px 0 96px;
 }
 .opening .scene img { object-position: 66% 54%; }
-.opening canvas { display: none; width: 100%; height: 100%; position: absolute; inset: 0; }
+.opening .scene canvas { display: none; width: 100%; height: 100%; position: absolute; inset: 0; }
 .road-cue, .valley-mist { display: none; }
 .opening .valley-camera {
   mask-image: linear-gradient(270deg, #000 calc(var(--valley-blend, 0) * 145% - 45%),
@@ -259,7 +259,7 @@ html { scroll-padding-top: 110px; }
   height: 100svh;
   background: var(--bg);
 }
-.is-journey canvas { display: block; }
+.is-journey .scene canvas { display: block; }
 .is-journey .road-cue {
   position: absolute;
   z-index: 1;
@@ -428,7 +428,7 @@ html { scroll-padding-top: 110px; }
 }
 
 .screen-flight { display: none; }
-.is-journey .app-sequence::after { content: ""; display: block; height: clamp(960px, 162svh, 1680px); }
+.is-journey .app-sequence::after { content: ""; display: block; height: clamp(1560px, 236svh, 2340px); }
 .is-journey .app-intro { position: sticky; top: var(--intro-pin, 0px); }
 .is-journey .app-intro-grid { min-height: 100svh; }
 .is-journey .screen-flight {
@@ -537,4 +537,51 @@ html { scroll-padding-top: 110px; }
   .is-journey .app-sequence::after { display: none; }
   .is-journey .app-intro { position: relative; top: auto; }
   .is-journey .screen-flight { display: none; }
+}
+
+.flight-route {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 13px;
+  padding: max(87px, 10svh) var(--gutter) 24px;
+  background: var(--bg);
+  opacity: var(--route-open, 0);
+  clip-path: inset(calc((1 - var(--route-open, 0)) * 15%)
+    calc((1 - var(--route-open, 0)) * 13%) calc((1 - var(--route-open, 0)) * 12%)
+    calc((1 - var(--route-open, 0)) * 62%) round calc((1 - var(--route-open, 0)) * 26px));
+}
+.route-heading, .route-map, .route-credit { width: min(1040px, 100%); margin-inline: auto; }
+.route-stop {
+  font-size: clamp(1.9rem, 4.5vw, 3.55rem);
+  font-weight: 670;
+  line-height: 1.06;
+  letter-spacing: -.048em;
+  margin-block: 5px 7px;
+}
+.route-note { color: var(--text-2); line-height: 1.35; }
+.route-map {
+  display: block;
+  height: 100%;
+  min-height: 0;
+  border: 1px solid #5e78704d;
+  border-radius: 10px;
+  background: #18313d;
+}
+.route-credit { color: var(--text-3); font: 400 10px/1.4 var(--mono); }
+.route-example { margin-top: 22px; color: var(--text-2); font-size: .92rem; }
+.route-example a { color: var(--gold-2); }
+@media (max-width: 760px) {
+  .flight-route {
+    padding: 110px var(--gutter) 16px;
+    gap: 9px;
+    clip-path: inset(calc((1 - var(--route-open, 0)) * 32%)
+      calc((1 - var(--route-open, 0)) * 21%) calc((1 - var(--route-open, 0)) * 11%)
+      calc((1 - var(--route-open, 0)) * 21%) round calc((1 - var(--route-open, 0)) * 17px));
+  }
+}
+@media (max-width: 760px) {
+  .route-heading { min-height: 112px; }
 }
