@@ -19,6 +19,7 @@
 
   const clamp = value => Math.min(1, Math.max(0, value));
   const ease = value => value * value * (3 - 2 * value);
+  const between = (value, start, end) => ease(clamp((value - start) / (end - start)));
 
   function drawScreenFlight(height) {
     const pinTop = Math.min(0, height - intro.offsetHeight);
@@ -39,20 +40,30 @@
     const screenHeight = screen.offsetHeight;
     const x = display.left + display.width / 2 - frame.left;
     const y = display.top + display.height / 2 - frame.top;
-    const advance = ease(clamp(dive / .82));
+    const advance = between(dive, 0, .34);
     // Aim at Home’s Speak it control so the push-in leads naturally to Lupa.
     const zoom = Math.max(frame.width / width * 1.4, height / screenHeight * 1.22);
-    const targetX = frame.width / 2 + width * .125 * zoom;
-    const targetY = height / 2 - pinTop - screenHeight * .01 * zoom;
+    const targetX = frame.width / 2 + width * .115 * zoom;
+    const targetY = height / 2 - pinTop - screenHeight * .002 * zoom;
+    const tap = between(dive, .29, .36) * (1 - between(dive, .37, .45));
 
     screenFlight.style.setProperty('--screen-width', `${width}px`);
     screenFlight.style.setProperty('--screen-x', `${x + (targetX - x) * advance}px`);
     screenFlight.style.setProperty('--screen-y', `${y + (targetY - y) * advance}px`);
     screenFlight.style.setProperty('--screen-scale', zoom ** advance);
     screenFlight.style.setProperty('--screen-angle', `${-9 * (1 - advance)}deg`);
-    screenFlight.style.setProperty('--dive-visible', ease(clamp(dive / .09)));
-    screenFlight.style.setProperty('--dive-shade', ease(clamp(dive / .62)));
-    screenFlight.style.setProperty('--dive-exit', ease(clamp((dive - .67) / .33)));
+    screenFlight.style.setProperty('--dive-visible', between(dive, 0, .075));
+    screenFlight.style.setProperty('--dive-shade', between(dive, 0, .31));
+    screenFlight.style.setProperty('--tap', tap);
+    screenFlight.style.setProperty('--tap-scale', 1.18 - tap * .33);
+    screenFlight.style.setProperty('--story-in', between(dive, .39, .48));
+    screenFlight.style.setProperty('--plan-in', between(dive, .69, .79));
+    screenFlight.style.setProperty('--words-1', between(dive, .44, .51));
+    screenFlight.style.setProperty('--words-2', between(dive, .50, .57));
+    screenFlight.style.setProperty('--words-3', between(dive, .56, .63));
+    screenFlight.style.setProperty('--dive-exit', between(dive, .91, 1));
+    screenFlight.style.setProperty('--story-top', `${-pinTop}px`);
+    screenFlight.style.setProperty('--story-height', `${height}px`);
   }
 
   function draw() {

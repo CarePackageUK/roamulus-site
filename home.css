@@ -428,7 +428,7 @@ html { scroll-padding-top: 110px; }
 }
 
 .screen-flight { display: none; }
-.is-journey .app-sequence::after { content: ""; display: block; height: clamp(380px, 72svh, 730px); }
+.is-journey .app-sequence::after { content: ""; display: block; height: clamp(960px, 162svh, 1680px); }
 .is-journey .app-intro { position: sticky; top: var(--intro-pin, 0px); }
 .is-journey .app-intro-grid { min-height: 100svh; }
 .is-journey .screen-flight {
@@ -447,14 +447,87 @@ html { scroll-padding-top: 110px; }
   background: var(--bg);
 }
 .screen-flight::before { opacity: calc(var(--dive-shade, 0) * .84); }
-.screen-flight::after { opacity: var(--dive-exit, 0); }
-.screen-flight img {
+.screen-flight::after { z-index: 2; opacity: var(--dive-exit, 0); }
+.flight-home {
   position: absolute;
   left: var(--screen-x, 50%);
   top: var(--screen-y, 50%);
   width: var(--screen-width, 0px);
   border-radius: 13.8% / 6.4%;
   transform: translate(-50%, -50%) rotate(var(--screen-angle, 0deg)) scale(var(--screen-scale, 1));
+}
+.flight-home > img { width: 100%; height: auto; border-radius: inherit; }
+.flight-tap {
+  position: absolute;
+  top: 50.2%;
+  left: 38.5%;
+  width: 13%;
+  aspect-ratio: 1;
+  border: max(1px, .65vw) solid var(--gold-2);
+  border-radius: 50%;
+  background: rgb(245 197 107 / .36);
+  box-shadow: 0 0 15px rgb(245 197 107 / .63);
+  transform: translate(-50%, -50%) scale(var(--tap-scale, 1));
+  opacity: var(--tap, 0);
+}
+.flight-story {
+  position: absolute;
+  z-index: 1;
+  inset: var(--story-top, 0) 0 auto;
+  height: var(--story-height, 100svh);
+  background: radial-gradient(ellipse at 68% 48%, #233741, var(--bg) 70%);
+  opacity: var(--story-in, 0);
+}
+.flight-beat {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-content: center;
+  align-items: center;
+  gap: clamp(28px, 7vw, 120px);
+  width: min(930px, 100% - 2 * var(--gutter));
+  margin-inline: auto;
+  padding-block: 68px 22px;
+}
+.flight-beat img {
+  height: min(64svh, 590px);
+  width: auto;
+  border-radius: 24px;
+  outline: 1px solid #57666a;
+  box-shadow: 0 22px 65px #080e1280;
+}
+.flight-request { opacity: calc(1 - var(--plan-in, 0)); }
+.flight-plan {
+  opacity: var(--plan-in, 0);
+  transform: translateY(calc((1 - var(--plan-in, 0)) * 28px));
+}
+.flight-headline {
+  max-width: 10ch;
+  font-weight: 700;
+  font-size: clamp(2.6rem, 6.3vw, 5.3rem);
+  line-height: .98;
+  letter-spacing: -.06em;
+}
+.flight-transcript, .flight-summary {
+  max-width: 36ch;
+  margin-top: 20px;
+  font-size: clamp(1.05rem, 1.8vw, 1.4rem);
+  color: var(--text-2);
+}
+.flight-transcript span:nth-child(1) { opacity: var(--words-1, 0); }
+.flight-transcript span:nth-child(2) { opacity: var(--words-2, 0); }
+.flight-transcript span:nth-child(3) { opacity: var(--words-3, 0); }
+
+@media (max-width: 760px) {
+  .flight-beat { grid-template-columns: minmax(0, 1fr); gap: 16px; padding-block: 100px 14px; }
+  .flight-beat img { height: min(52svh, 435px); justify-self: center; border-radius: 17px; }
+  .flight-headline { max-width: none; font-size: clamp(2rem, 9vw, 3rem); }
+  .flight-beat .eyebrow { margin-bottom: 8px; }
+  .flight-transcript, .flight-summary { margin-top: 10px; font-size: 1rem; line-height: 1.35; }
+}
+@media (max-height: 600px) and (max-width: 760px) {
+  .flight-beat img { height: 43svh; }
 }
 .app-intro:has(:focus-visible) .screen-flight { visibility: hidden; }
 .walkthrough { background: linear-gradient(var(--bg), transparent 78%); }
