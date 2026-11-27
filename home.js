@@ -2,7 +2,10 @@
   const nav = document.getElementById('nav');
   const opening = document.querySelector('.opening');
   const hero = opening.querySelector('.hero');
-  const intro = opening.querySelector('.app-intro');
+  const sequence = opening.querySelector('.app-sequence');
+  const intro = sequence.querySelector('.app-intro');
+  const screenFlight = intro.querySelector('.screen-flight');
+  const screen = intro.querySelector('.app-intro-home img');
   const scene = opening.querySelector('.scene');
   const phones = intro.querySelector('.app-intro-visual');
   const photograph = scene.querySelector('img');
@@ -12,9 +15,45 @@
   let render = null;
   let loading = false;
   let lastProgress = -1;
+  let lastDive = -1;
 
   const clamp = value => Math.min(1, Math.max(0, value));
   const ease = value => value * value * (3 - 2 * value);
+
+  function drawScreenFlight(height) {
+    const pinTop = Math.min(0, height - intro.offsetHeight);
+    intro.style.setProperty('--intro-pin', `${pinTop}px`);
+
+    const runway = sequence.offsetHeight - intro.offsetHeight;
+    const dive = clamp((pinTop - sequence.getBoundingClientRect().top) / Math.max(1, runway));
+    if (dive === lastDive) return;
+    lastDive = dive;
+    if (dive === 0) {
+      screenFlight.style.setProperty('--dive-visible', 0);
+      return;
+    }
+
+    const frame = intro.getBoundingClientRect();
+    const display = screen.getBoundingClientRect();
+    const width = screen.offsetWidth;
+    const screenHeight = screen.offsetHeight;
+    const x = display.left + display.width / 2 - frame.left;
+    const y = display.top + display.height / 2 - frame.top;
+    const advance = ease(clamp(dive / .82));
+    // Aim at Home’s Speak it control so the push-in leads naturally to Lupa.
+    const zoom = Math.max(frame.width / width * 1.4, height / screenHeight * 1.22);
+    const targetX = frame.width / 2 + width * .125 * zoom;
+    const targetY = height / 2 - pinTop - screenHeight * .01 * zoom;
+
+    screenFlight.style.setProperty('--screen-width', `${width}px`);
+    screenFlight.style.setProperty('--screen-x', `${x + (targetX - x) * advance}px`);
+    screenFlight.style.setProperty('--screen-y', `${y + (targetY - y) * advance}px`);
+    screenFlight.style.setProperty('--screen-scale', zoom ** advance);
+    screenFlight.style.setProperty('--screen-angle', `${-9 * (1 - advance)}deg`);
+    screenFlight.style.setProperty('--dive-visible', ease(clamp(dive / .09)));
+    screenFlight.style.setProperty('--dive-shade', ease(clamp(dive / .62)));
+    screenFlight.style.setProperty('--dive-exit', ease(clamp((dive - .67) / .33)));
+  }
 
   function draw() {
     frame = 0;
@@ -35,6 +74,7 @@
     const entry = (height - phones.getBoundingClientRect().top) / (height * .6);
     phones.style.setProperty('--home-rise', ease(clamp(entry)));
     phones.style.setProperty('--map-rise', ease(clamp((entry - .13) / .87)));
+    drawScreenFlight(height);
     if (progress === lastProgress) return;
     lastProgress = progress;
     opening.style.setProperty('--road-progress', progress);
@@ -49,6 +89,7 @@
     if (reducedMotion.matches) {
       opening.classList.remove('is-journey');
       lastProgress = -1;
+      lastDive = -1;
       return;
     }
     if (render || loading) {
@@ -75,6 +116,7 @@
   addEventListener('scroll', scheduleFrame, {passive: true});
   addEventListener('resize', () => {
     lastProgress = -1;
+    lastDive = -1;
     scheduleFrame();
   }, {passive: true});
   reducedMotion.addEventListener('change', startCamera);
