@@ -1,29 +1,73 @@
 (() => {
   const nav = document.getElementById('nav');
   const hero = document.querySelector('.hero');
-  const scene = hero.querySelector('.scene img');
+  const canvas = hero.querySelector('canvas');
+  const photograph = hero.querySelector('.scene img');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const mobile = matchMedia('(max-width: 760px)');
   let frame = 0;
+  let render = null;
+  let loading = false;
+  let lastProgress = -1;
 
   function draw() {
     frame = 0;
     nav.classList.toggle('is-scrolled', scrollY > 10);
+    if (!render || reducedMotion.matches) return;
 
-    if (reducedMotion.matches || scrollY > hero.offsetHeight) return;
+    // Delay the layout enhancement if somebody has already started reading.
+    if (!hero.classList.contains('is-journey')) {
+      if (scrollY > 40) return;
+      hero.classList.add('is-journey');
+    }
 
-    const progress = Math.min(1, Math.max(0, scrollY / hero.offsetHeight));
-    scene.style.setProperty('--scene-offset', `${progress * 50}px`);
-    scene.style.setProperty('--scene-scale', 1 + progress * .12);
+    const travel = hero.offsetHeight - canvas.clientHeight;
+    const progress = Math.min(1, Math.max(0, -hero.getBoundingClientRect().top / Math.max(1, travel)));
+    if (progress === lastProgress) return;
+    lastProgress = progress;
+    hero.style.setProperty('--road-progress', progress);
+    render(progress, mobile.matches);
   }
 
   function scheduleFrame() {
     if (!frame) frame = requestAnimationFrame(draw);
   }
 
-  addEventListener('scroll', scheduleFrame, { passive: true });
-  addEventListener('resize', scheduleFrame, { passive: true });
-  reducedMotion.addEventListener('change', scheduleFrame);
+  async function startCamera() {
+    if (reducedMotion.matches) {
+      hero.classList.remove('is-journey');
+      lastProgress = -1;
+      return;
+    }
+    if (render || loading) {
+      scheduleFrame();
+      return;
+    }
+    loading = true;
+    try {
+      const {createHighlandCamera} = await import('./highland-camera.js');
+      render = await createHighlandCamera(canvas, photograph);
+      if (render) scheduleFrame();
+    } catch {
+      // The photograph is already present if the optional camera cannot load.
+    } finally {
+      loading = false;
+    }
+  }
+
+  canvas.addEventListener('webglcontextlost', () => {
+    render = null;
+    hero.classList.remove('is-journey');
+    lastProgress = -1;
+  });
+  addEventListener('scroll', scheduleFrame, {passive: true});
+  addEventListener('resize', () => {
+    lastProgress = -1;
+    scheduleFrame();
+  }, {passive: true});
+  reducedMotion.addEventListener('change', startCamera);
   draw();
+  startCamera();
 
   if ('IntersectionObserver' in window && !reducedMotion.matches) {
     const observer = new IntersectionObserver(entries => {

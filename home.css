@@ -226,22 +226,51 @@ html { scroll-padding-top: 110px; }
   letter-spacing: .04em;
   text-transform: uppercase;
 }
-.hero {
+.hero { position: relative; isolation: isolate; }
+.hero-backdrop { position: absolute; inset: 0; pointer-events: none; }
+.hero-stage {
   position: relative;
   display: grid;
   align-items: center;
   min-height: max(670px, 100svh);
   padding: 135px 0 96px;
-  overflow: hidden;
 }
-.hero .scene img {
-  object-position: 66% 54%;
-  transform: translate3d(0, var(--scene-offset, 0px), 0) scale(var(--scene-scale, 1));
-  transform-origin: 68% 58%;
+.hero .scene img { object-position: 66% 54%; }
+.hero canvas { display: none; width: 100%; height: 100%; position: absolute; inset: 0; }
+.road-cue { display: none; }
+.hero.is-journey { padding-bottom: clamp(380px, 94svh, 1050px); }
+.is-journey .scene {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  background: var(--bg);
 }
+.is-journey canvas { display: block; }
+.is-journey .road-cue {
+  position: absolute;
+  z-index: 1;
+  inset: auto var(--gutter) max(18px, env(safe-area-inset-bottom)) auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 10px;
+  background: rgba(11,17,23,.68);
+  color: var(--text);
+  border-radius: 3px;
+  font: 400 11px/1.4 var(--mono);
+  opacity: calc(1 - var(--road-progress, 0) * .82);
+}
+.road-cue::after {
+  content: '';
+  width: 26px;
+  height: 2px;
+  background: linear-gradient(to right, var(--gold) calc(var(--road-progress, 0) * 100%), rgba(239,243,245,.5) 0);
+}
+.is-journey .hero-copy { transform: translateY(calc(var(--road-progress, 0) * -95px)); }
 .hero .scene::after {
+  --shade: var(--road-progress, 0);
   background:
-    linear-gradient(90deg, rgba(11,17,23,.94), rgba(11,17,23,.79) 29%, rgba(11,17,23,.24) 56%, transparent 75%),
+    linear-gradient(90deg, rgb(11 17 23 / calc(.94 - var(--shade) * .53)), rgb(11 17 23 / calc(.79 - var(--shade) * .51)) 29%, rgb(11 17 23 / calc(.24 - var(--shade) * .14)) 56%, transparent 75%),
     linear-gradient(0deg, var(--bg), transparent 28%, transparent 80%, rgba(11,17,23,.35));
 }
 .hero-inner { position: relative; z-index: 1; }
@@ -269,7 +298,7 @@ html { scroll-padding-top: 110px; }
   .nav-inner { height: auto; min-height: 96px; position: relative; padding: 8px 0 42px; gap: 12px; }
   .nav-links { position: absolute; inset: auto 0 4px; display: flex; justify-content: space-between; gap: 6px; font-size: 10px; }
   .nav-links a { display: flex; align-items: center; min-height: 33px; }
-  .hero { min-height: 0; padding: clamp(315px, 57vw, 495px) 0 42px; align-items: end; }
+  .hero-stage { min-height: 0; padding: clamp(315px, 57vw, 495px) 0 42px; align-items: end; }
   .hero .scene { height: clamp(430px, 72vw, 610px); }
   .hero .scene img { object-position: 69% 50%; }
   .hero .scene::after {
@@ -283,6 +312,16 @@ html { scroll-padding-top: 110px; }
 @media (max-width: 430px) {
   .hero-actions .btn { min-height: 48px; height: auto; padding: 10px 14px; font-size: 14px; }
 }
+@media (max-width: 760px) {
+  .is-journey .hero-stage { min-height: 100svh; padding-bottom: 70px; }
+  .hero.is-journey { padding-bottom: clamp(330px, 72svh, 620px); }
+  .hero.is-journey .scene { height: 100svh; }
+  .hero.is-journey .scene::after {
+    background: linear-gradient(0deg, var(--bg), rgb(16 23 29 / calc(.87 - var(--shade) * .56)) 30%, rgb(16 23 29 / calc(.56 - var(--shade) * .44)) 52%, transparent 81%);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
-  .hero .scene img { transform: none; }
+  .hero.is-journey { padding-bottom: 0; }
+  .is-journey .scene { position: absolute; height: auto; background: none; }
+  .is-journey canvas, .is-journey .road-cue { display: none; }
 }
