@@ -69,9 +69,11 @@ export function createDayOneMap(canvas) {
     ctx.fillText(text, labelX, y);
   }
 
-  function scene(width, height, local, progress) {
-    const center = local ? [-.2504, 49.2857] : [-.67, 50.055 + .06 * (1 - 2 * progress)];
-    const range = local ? .0106 : 2.22 - .15 * progress;
+  function scene(width, height, local, progress, siteZoom = 0) {
+    const center = local
+      ? [-.2504 + (campsite[0] + .2504) * siteZoom, 49.2857 + (campsite[1] - 49.2857) * siteZoom]
+      : [-.67, 50.055 + .06 * (1 - 2 * progress)];
+    const range = local ? .0106 / (1 + 4 * siteZoom) : 2.22 - .15 * progress;
     const scale = height / range;
     const ratio = Math.cos(center[1] * Math.PI / 180);
     const project = ([x, y]) => [width / 2 + (x - center[0]) * scale * ratio, height / 2 - (y - center[1]) * scale];
@@ -130,14 +132,21 @@ export function createDayOneMap(canvas) {
     const end = route.at(-1);
     dot(start, 4, '#f5c56b');
     dot(end, 4, '#f5c56b');
-    label(start, local ? 'Ferry terminal' : 'Portsmouth', true, 'left');
-    label(end, local ? 'First overnight stop' : 'Caen / Ouistreham', true);
-    dot(marker, 12, '#f0b85940');
+    if (siteZoom < .33) label(start, local ? 'Ferry terminal' : 'Portsmouth', true, 'left');
+    if (siteZoom < .58) label(end, local ? 'First overnight stop' : 'Caen / Ouistreham', true);
+    if (siteZoom > 0) {
+      ctx.beginPath();
+      ctx.arc(marker[0], marker[1], 16 + 28 * siteZoom, 0, Math.PI * 2);
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = '#f0b8598c';
+      ctx.stroke();
+    }
+    dot(marker, 12 + 9 * siteZoom, '#f0b85940');
     dot(marker, 6, '#f5c56b');
     dot(marker, 2.5, '#172934');
   }
 
-  return (crossingProgress, roadProgress, closeUp) => {
+  return (crossingProgress, roadProgress, closeUp, siteZoom = 0) => {
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
     if (!width || !height) return;
@@ -154,7 +163,7 @@ export function createDayOneMap(canvas) {
     if (closeUp < 1) scene(width, height, false, crossingProgress);
     if (closeUp > 0) {
       ctx.globalAlpha = closeUp;
-      scene(width, height, true, roadProgress);
+      scene(width, height, true, roadProgress, siteZoom);
       ctx.globalAlpha = 1;
     }
   };
